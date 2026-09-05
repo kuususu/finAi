@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Категории — FinAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="assets/css/finai.css" rel="stylesheet">
+<style>html{opacity:0}</style>
+<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/js/tailwind-config.js"></script>
+</head>
+<body class="bg-background font-body-md text-body-md text-on-surface" data-page="categories">
+<div id="page-content" class="flex flex-col w-full">
+
+<!-- Page Title -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-lg">
+  <div>
+    <div class="flex items-center gap-space-xs mb-1">
+      <span class="font-label-caps text-label-caps tracking-wider text-primary font-semibold uppercase bg-secondary-container/50 px-2 py-0.5 rounded">Аналитика трат</span>
+      <span class="text-outline-variant font-label-md">•</span>
+      <span class="font-label-md text-label-md text-on-surface-variant">Сентябрь 2026</span>
+    </div>
+    <h1 class="page-title">Категории</h1>
+    <p class="page-subtitle">Структурированный анализ бюджета, долей расходов и динамики к августу</p>
+  </div>
+</div>
+
+<!-- Unified KPI Metrics Plate (shared Subscriptions prototype) -->
+<section class="kpi-plate mb-space-lg" aria-label="Ключевые показатели за сентябрь 2026">
+  <div class="kpi-item">
+    <div class="kpi-label"><span>Общие расходы</span></div>
+    <div class="kpi-value-row"><span class="kpi-value">138 420</span><span class="kpi-unit">₽</span></div>
+    <div class="kpi-note">
+      <span class="text-secondary font-semibold font-tabular-num flex items-center"><span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>-4.2%</span>
+      <span>к августу (144 500 ₽)</span>
+    </div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-label"><span>Динамика к августу</span></div>
+    <div class="kpi-value-row"><span class="kpi-value kpi-value--secondary">-6 080</span><span class="kpi-unit">₽</span></div>
+    <div class="kpi-note"><span class="text-secondary font-semibold">Экономия</span><span>по 5 категориям из 8</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-label"><span>Средний расход в день</span></div>
+    <div class="kpi-value-row"><span class="kpi-value">4 614</span><span class="kpi-unit">₽</span></div>
+    <div class="kpi-note"><span>30 дней расчетного месяца</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-label"><span>Главная категория</span></div>
+    <div class="kpi-value-row"><span class="kpi-value">Продукты</span><span class="kpi-unit text-primary">34%</span></div>
+    <div class="kpi-note"><span class="text-on-surface font-semibold">46 800 ₽</span><span>• 38 транзакций</span></div>
+  </div>
+</section>
+
+<!-- Filter & Controls Canvas (shared Transactions prototype) -->
+<div class="card filter-canvas mb-space-lg">
+  <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+    <div class="pill-group" id="catPeriodFilter" role="group" aria-label="Период анализа">
+      <button class="pill is-active" type="button" data-period="sept">Сентябрь 2026</button>
+      <button class="pill" type="button" data-period="aug">Август 2026</button>
+      <button class="pill" type="button" data-period="quarter">Квартал</button>
+    </div>
+    <div class="pill-group" id="catTrendFilter" role="group" aria-label="Динамика категорий">
+      <button class="pill is-active" type="button" data-trend="all">Все категории</button>
+      <button class="pill" type="button" data-trend="up">С ростом</button>
+      <button class="pill" type="button" data-trend="down">Снижение</button>
+      <button class="pill" type="button" data-trend="flat">Без изменений</button>
+    </div>
+  </div>
+</div>
+
+<!-- Main 12-Column Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+  <!-- Category Hierarchy & Rating Section (7 cols) -->
+  <div class="lg:col-span-7 flex flex-col gap-space-md">
+    <section class="card p-space-lg">
+      <div class="flex items-center justify-between pb-space-sm border-b border-surface-container-low mb-space-md">
+        <div>
+          <h2 class="section-title">Рейтинг категорий</h2>
+          <p class="section-subtitle">Распределение расходов и отклонения от предыдущего периода</p>
+        </div>
+        <span class="font-label-caps text-label-caps font-semibold text-on-surface-variant bg-surface-container px-2 py-1 rounded">8 категорий</span>
+      </div>
+
+      <!-- List of Categories -->
+      <div class="flex flex-col gap-space-xs">
+        <!-- 1. Продукты (Selected) -->
+        <div class="group p-space-sm rounded-xl bg-secondary-container/30 border border-primary/30 transition-all cursor-pointer relative">
+          <div class="flex items-center justify-between gap-space-sm mb-1.5">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[20px]">local_grocery_store</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-title-sm text-title-sm text-on-surface font-bold truncate">Продукты и супермаркеты</span>
+                  <span class="font-label-caps text-label-caps text-primary bg-surface-container-lowest px-1.5 py-0.5 rounded font-bold">Выбрана</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">38 операций • ВкусВилл, Перекрёсток, Самокат</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-title-sm text-title-sm text-on-surface font-bold font-tabular-num">46 800 ₽</div>
+              <div class="flex items-center justify-end gap-1 font-body-sm text-body-sm">
+                <span class="font-semibold text-primary">34%</span>
+                <span class="text-error font-semibold font-tabular-num">+2%</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+            <div class="bg-primary h-full rounded-full" style="width: 34%;"></div>
+          </div>
+        </div>
+
+        <!-- 2. Кафе и рестораны -->
+        <div class="group p-space-sm rounded-xl hover:bg-surface-container-low/70 transition-all cursor-pointer">
+          <div class="flex items-center justify-between gap-space-sm mb-1.5">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-primary-container/10 text-primary-container flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">restaurant</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Кафе и рестораны</span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">22 оп.</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Доставка, обеды, кофейни</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-title-sm text-title-sm text-on-surface font-bold font-tabular-num">28 400 ₽</div>
+              <div class="flex items-center justify-end gap-1 font-body-sm text-body-sm">
+                <span class="text-on-surface-variant font-medium">20.5%</span>
+                <span class="text-error font-semibold font-tabular-num">+18%</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+            <div class="bg-primary-container h-full rounded-full" style="width: 20.5%;"></div>
+          </div>
+        </div>
+
+
+        <!-- 3. Транспорт и авто -->
+        <div class="group p-space-sm rounded-xl hover:bg-surface-container-low/70 transition-all cursor-pointer">
+          <div class="flex items-center justify-between gap-space-sm mb-1.5">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-[#0284c7]/10 text-[#0284c7] flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">directions_car</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Транспорт и авто</span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">26 оп.</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Метро, такси, каршеринг, бензин</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-title-sm text-title-sm text-on-surface font-bold font-tabular-num">16 900 ₽</div>
+              <div class="flex items-center justify-end gap-1 font-body-sm text-body-sm">
+                <span class="text-on-surface-variant font-medium">12.2%</span>
+                <span class="text-secondary font-semibold font-tabular-num">-8%</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+            <div class="bg-[#0284c7] h-full rounded-full" style="width: 12.2%;"></div>
+          </div>
+        </div>
+
+        <!-- 4. Коммунальные платежи и жилье -->
+        <div class="group p-space-sm rounded-xl hover:bg-surface-container-low/70 transition-all cursor-pointer">
+          <div class="flex items-center justify-between gap-space-sm mb-1.5">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">home</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Коммунальные платежи и жилье</span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">4 оп.</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">ЖКХ, интернет, электроэнергия</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-title-sm text-title-sm text-on-surface font-bold font-tabular-num">12 500 ₽</div>
+              <div class="flex items-center justify-end gap-1 font-body-sm text-body-sm">
+                <span class="text-on-surface-variant font-medium">9.0%</span>
+                <span class="text-on-surface-variant font-medium font-tabular-num">0%</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+            <div class="bg-tertiary h-full rounded-full" style="width: 9.0%;"></div>
+          </div>
+        </div>
+
+        <!-- 5. Здоровье и аптеки -->
+        <div class="group p-space-sm rounded-xl hover:bg-surface-container-low/70 transition-all cursor-pointer">
+          <div class="flex items-center justify-between gap-space-sm mb-1.5">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-[#0d9488]/10 text-[#0d9488] flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">medical_services</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Здоровье и аптеки</span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">6 оп.</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Аптеки, консультации врачей</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-title-sm text-title-sm text-on-surface font-bold font-tabular-num">9 400 ₽</div>
+              <div class="flex items-center justify-end gap-1 font-body-sm text-body-sm">
+                <span class="text-on-surface-variant font-medium">6.8%</span>
+                <span class="text-secondary font-semibold font-tabular-num">-12%</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+            <div class="bg-[#0d9488] h-full rounded-full" style="width: 6.8%;"></div>
+          </div>
+        </div>
+
+
+        <!-- 6. Одежда и обувь -->
+        <div class="group p-space-sm rounded-xl hover:bg-surface-container-low/70 transition-all cursor-pointer">
+          <div class="flex items-center justify-between gap-space-sm mb-1.5">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-[#9333ea]/10 text-[#9333ea] flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">apparel</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Одежда и обувь</span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">5 оп.</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Маркетплейсы, бутики</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-title-sm text-title-sm text-on-surface font-bold font-tabular-num">8 300 ₽</div>
+              <div class="flex items-center justify-end gap-1 font-body-sm text-body-sm">
+                <span class="text-on-surface-variant font-medium">6.0%</span>
+                <span class="text-error font-semibold font-tabular-num">+5%</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+            <div class="bg-[#9333ea] h-full rounded-full" style="width: 6.0%;"></div>
+          </div>
+        </div>
+
+        <!-- 7. Подписки и сервисы -->
+        <div class="group p-space-sm rounded-xl hover:bg-surface-container-low/70 transition-all cursor-pointer">
+          <div class="flex items-center justify-between gap-space-sm mb-1.5">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-[#6366f1]/10 text-[#6366f1] flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">event_repeat</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Подписки и сервисы</span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">6 оп.</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">СберПрайм, онлайн-кинотеатры, облако</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-title-sm text-title-sm text-on-surface font-bold font-tabular-num">4 890 ₽</div>
+              <div class="flex items-center justify-end gap-1 font-body-sm text-body-sm">
+                <span class="text-on-surface-variant font-medium">3.5%</span>
+                <span class="text-on-surface-variant font-medium font-tabular-num">0%</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+            <div class="bg-[#6366f1] h-full rounded-full" style="width: 3.5%;"></div>
+          </div>
+        </div>
+
+        <!-- 8. Другое -->
+        <div class="group p-space-sm rounded-xl hover:bg-surface-container-low/70 transition-all cursor-pointer">
+          <div class="flex items-center justify-between gap-space-sm mb-1.5">
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[20px]">more_horiz</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Другое</span>
+                  <span class="font-label-caps text-label-caps text-on-surface-variant bg-surface-container px-1.5 py-0.5 rounded">11 оп.</span>
+                </div>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Комиссии, переводы, непредвиденное</span>
+              </div>
+            </div>
+            <div class="text-right shrink-0">
+              <div class="font-title-sm text-title-sm text-on-surface font-bold font-tabular-num">11 130 ₽</div>
+              <div class="flex items-center justify-end gap-1 font-body-sm text-body-sm">
+                <span class="text-on-surface-variant font-medium">8.0%</span>
+                <span class="text-secondary font-semibold font-tabular-num">-3%</span>
+              </div>
+            </div>
+          </div>
+          <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+            <div class="bg-outline h-full rounded-full" style="width: 8.0%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- Selected Category Deep-Dive (5 cols) -->
+  <div class="lg:col-span-5 flex flex-col gap-space-md">
+    <section class="card p-space-lg">
+      <div class="flex items-center justify-between pb-space-sm border-b border-surface-container-low mb-space-md">
+        <div class="flex items-center gap-space-sm">
+          <div class="w-11 h-11 rounded-xl bg-primary text-on-primary flex items-center justify-center shadow-sm">
+            <span class="material-symbols-outlined text-[24px]">local_grocery_store</span>
+          </div>
+          <div>
+            <h3 class="section-title">Продукты и супермаркеты</h3>
+            <p class="section-subtitle">Детализация за сентябрь 2026</p>
+          </div>
+        </div>
+        <span class="font-label-caps text-label-caps font-bold text-secondary bg-secondary-container/50 px-2 py-0.5 rounded">ТОП-1</span>
+      </div>
+
+      <!-- Key Stats 2x2 -->
+      <div class="grid grid-cols-2 gap-space-sm mb-space-md">
+        <div class="p-space-sm rounded-xl bg-surface-container-low/60">
+          <span class="font-label-md text-label-md text-on-surface-variant">Сумма трат</span>
+          <div class="font-headline-lg text-headline-lg font-bold text-on-surface font-tabular-num mt-0.5">46 800 ₽</div>
+        </div>
+        <div class="p-space-sm rounded-xl bg-surface-container-low/60">
+          <span class="font-label-md text-label-md text-on-surface-variant">Доля в бюджете</span>
+          <div class="font-headline-lg text-headline-lg font-bold text-primary font-tabular-num mt-0.5">34%</div>
+        </div>
+        <div class="p-space-sm rounded-xl bg-surface-container-low/60">
+          <span class="font-label-md text-label-md text-on-surface-variant">Средний чек</span>
+          <div class="font-headline-lg text-headline-lg font-bold text-on-surface font-tabular-num mt-0.5">1 420 ₽</div>
+        </div>
+        <div class="p-space-sm rounded-xl bg-surface-container-low/60">
+          <span class="font-label-md text-label-md text-on-surface-variant">Транзакций</span>
+          <div class="font-headline-lg text-headline-lg font-bold text-on-surface font-tabular-num mt-0.5">38 оп.</div>
+        </div>
+      </div>
+
+      <!-- Top Merchants / Places -->
+      <div class="mb-space-md">
+        <div class="flex items-center justify-between mb-space-xs">
+          <h4 class="subsection-title">Топ мест покупок</h4>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">3 ведущих сети</span>
+        </div>
+        <div class="flex flex-col gap-space-2xs">
+          <div class="p-2 rounded-lg bg-surface-container-low/40 flex items-center justify-between text-body-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-primary"></span>
+              <span class="font-medium text-on-surface">ВкусВилл</span>
+              <span class="text-on-surface-variant text-[12px]">• 18 покупок</span>
+            </div>
+            <span class="font-semibold text-on-surface font-tabular-num">22 450 ₽ (48%)</span>
+          </div>
+          <div class="p-2 rounded-lg bg-surface-container-low/40 flex items-center justify-between text-body-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-primary-container"></span>
+              <span class="font-medium text-on-surface">Перекрёсток</span>
+              <span class="text-on-surface-variant text-[12px]">• 12 покупок</span>
+            </div>
+            <span class="font-semibold text-on-surface font-tabular-num">15 620 ₽ (33%)</span>
+          </div>
+          <div class="p-2 rounded-lg bg-surface-container-low/40 flex items-center justify-between text-body-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-secondary"></span>
+              <span class="font-medium text-on-surface">Самокат</span>
+              <span class="text-on-surface-variant text-[12px]">• 8 заказов</span>
+            </div>
+            <span class="font-semibold text-on-surface font-tabular-num">8 730 ₽ (19%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Trend Comparison -->
+      <div class="mb-space-md">
+        <div class="flex items-center justify-between mb-space-xs">
+          <h4 class="subsection-title">Динамика по неделям</h4>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">Сентябрь</span>
+        </div>
+        <div class="grid grid-cols-4 gap-2 text-center text-body-sm">
+          <div class="bg-surface-container-low/40 p-2 rounded-lg">
+            <span class="text-on-surface-variant text-[11px] font-label-caps block">1–7 сен</span>
+            <span class="font-semibold text-on-surface block font-tabular-num mt-0.5">11 200 ₽</span>
+          </div>
+          <div class="bg-surface-container-low/40 p-2 rounded-lg">
+            <span class="text-on-surface-variant text-[11px] font-label-caps block">8–14 сен</span>
+            <span class="font-semibold text-on-surface block font-tabular-num mt-0.5">12 100 ₽</span>
+          </div>
+          <div class="bg-surface-container-low/40 p-2 rounded-lg">
+            <span class="text-on-surface-variant text-[11px] font-label-caps block">15–21 сен</span>
+            <span class="font-semibold text-on-surface block font-tabular-num mt-0.5">10 800 ₽</span>
+          </div>
+          <div class="bg-surface-container-low/40 p-2 rounded-lg">
+            <span class="text-on-surface-variant text-[11px] font-label-caps block">22–30 сен</span>
+            <span class="font-semibold text-on-surface block font-tabular-num mt-0.5">12 700 ₽</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <a class="btn btn-primary w-full" data-navigate="transactions" href="transactionsFin.html">
+        <span>Смотреть операции (38)</span>
+        <span class="material-symbols-outlined">arrow_forward</span>
+      </a>
+    </section>
+
+    <!-- Advisory Info Note -->
+    <div class="p-space-md rounded-xl bg-secondary-container/20 border border-secondary/20 flex items-start gap-space-xs">
+      <span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">tips_and_updates</span>
+      <div class="text-body-sm text-on-surface-variant leading-relaxed">
+        <strong class="text-on-surface font-semibold">Совет FinAI:</strong> Оплата картой Сбера в супермаркетах принесла <span class="text-primary font-semibold">1 404 бонуса Спасибо</span> за месяц. Лимит бонусов в категории исчерпан на 70%.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/interactions.js"></script>
+<script>
+  (function () {
+    var periodGrp = document.getElementById('catPeriodFilter');
+    var trendGrp = document.getElementById('catTrendFilter');
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#page-content .group'));
+
+    function setPillActive(grp, attr, val) {
+      Array.prototype.forEach.call(grp.querySelectorAll('.pill'), function (p) {
+        p.classList.toggle('is-active', p.getAttribute(attr) === val);
+      });
+    }
+
+    // tag each category row with its real trend (+ / − / 0) from existing data
+    rows.forEach(function (r) {
+      var deltas = r.querySelectorAll('span.font-tabular-num');
+      var sign = 'flat';
+      for (var i = 0; i < deltas.length; i++) {
+        var t = deltas[i].textContent.trim();
+        if (/^[+\-−]/.test(t)) { sign = 'down'; if (t[0] === '+') { sign = 'up'; } break; }
+        if (/^0/.test(t)) { sign = 'flat'; break; }
+      }
+      r.setAttribute('data-trend', sign);
+    });
+
+    if (trendGrp) {
+      trendGrp.addEventListener('click', function (e) {
+        if (!e.target || !e.target.closest) { return; }
+        var b = e.target.closest('button[data-trend]');
+        if (!b) { return; }
+        var v = b.getAttribute('data-trend');
+        setPillActive(trendGrp, 'data-trend', v);
+        rows.forEach(function (r) {
+          r.style.display = (v === 'all' || r.getAttribute('data-trend') === v) ? '' : 'none';
+        });
+      });
+    }
+
+    if (periodGrp) {
+      periodGrp.addEventListener('click', function (e) {
+        if (!e.target || !e.target.closest) { return; }
+        var b = e.target.closest('button[data-period]');
+        if (!b) { return; }
+        setPillActive(periodGrp, 'data-period', b.getAttribute('data-period'));
+      });
+    }
+
+    // click a category row to select it
+    function selectRow(target) {
+      rows.forEach(function (r) {
+        r.classList.remove('bg-secondary-container/30', 'border', 'border-primary/30');
+        r.classList.add('hover:bg-surface-container-low/70');
+      });
+      target.classList.add('bg-secondary-container/30', 'border', 'border-primary/30');
+      target.classList.remove('hover:bg-surface-container-low/70');
+    }
+    rows.forEach(function (r) { r.addEventListener('click', function () { selectRow(r); }); });
+  })();
+</script>
+</body>
+</html>

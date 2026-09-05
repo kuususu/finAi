@@ -1,0 +1,459 @@
+/* ==========================================================================
+   FinAI Design System — shared tokens & components
+   Single source of truth for typography, buttons, pills, cards, KPI plates
+   and the responsive behavior of the shared app shell (Sidebar + TopDashboard).
+   Canonical prototypes:
+     - Sidebar / TopDashboard .... Categories page
+     - KPI information panels .... Subscriptions page
+     - Filter / control area ..... Transactions page
+   ========================================================================== */
+
+:root {
+  /* Color tokens (mirror of the shared Tailwind config) */
+  --bg: #f9f9ff;
+  --surface-lowest: #ffffff;
+  --surface-low: #f1f3ff;
+  --surface-container: #e9edff;
+  --surface-high: #e1e8fd;
+  --surface-highest: #dce2f7;
+  --on-surface: #141b2b;
+  --on-surface-variant: #3d4a3e;
+  --outline: #6d7b6d;
+  --outline-variant: #bccabb;
+  --primary: #006b32;
+  --primary-container: #008741;
+  --on-primary: #ffffff;
+  --accent: #00a551;
+  --secondary: #1f6b41;
+  --tertiary: #00685f;
+  --error: #ba1a1a;
+  --inverse-surface: #293040;
+  --inverse-on-surface: #edf0ff;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.06);
+
+  /* Shape scale: cards 12px, controls 8px, pills full */
+  --radius-card: 0.75rem;
+  --radius-control: 0.5rem;
+
+  --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Typography system
+   -------------------------------------------------------------------------- */
+
+/* Page title — identical on every page (Manrope 24/32, bold, tight) */
+.page-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+/* Page subtitle / description */
+.page-subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--on-surface-variant);
+  margin: 2px 0 0;
+}
+
+/* Section heading (h2-level cards) */
+.section-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+/* Section supporting text */
+.section-subtitle {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: var(--on-surface-variant);
+  margin: 2px 0 0;
+}
+
+/* Inner block heading (h3/h4-level, title-sm scale) */
+.subsection-title {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons — one system for the whole product
+   Primary #006b32 → hover #008741 · Secondary white + border · Ghost / Quiet
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-control);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--on-surface);
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: none;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease),
+    border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+
+.btn .material-symbols-outlined { font-size: 18px; line-height: 1; }
+
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover { background: var(--primary-container); }
+
+.btn-secondary {
+  background: var(--surface-lowest);
+  color: var(--on-surface);
+  border-color: rgba(225, 232, 253, 0.8);
+  box-shadow: var(--shadow-sm);
+}
+.btn-secondary:hover { background: var(--surface-low); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+}
+.btn-ghost:hover { background: rgba(0, 107, 50, 0.08); }
+
+.btn-sm {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 12px;
+  gap: 6px;
+}
+.btn-sm .material-symbols-outlined { font-size: 16px; }
+
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: var(--radius-control);
+  color: var(--outline);
+}
+.btn-icon:hover {
+  background: var(--surface-container);
+  color: var(--on-surface);
+}
+
+/* --------------------------------------------------------------------------
+   Segmented pills / filter chips — Transactions control language
+   -------------------------------------------------------------------------- */
+
+.pill-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-card);
+  background: var(--surface-low);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: var(--radius-control);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease),
+    box-shadow 0.15s var(--ease);
+}
+
+.pill:hover { color: var(--on-surface); }
+.pill:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.pill.is-active {
+  background: var(--surface-lowest);
+  color: var(--on-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --------------------------------------------------------------------------
+   Cards — one surface: white, 12px radius, hairline border, soft shadow
+   -------------------------------------------------------------------------- */
+
+.card {
+  background: var(--surface-lowest);
+  border: 1px solid rgba(225, 232, 253, 0.6);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Upper filter / control canvas (Transactions prototype) */
+.filter-canvas {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   KPI / information plate — Subscriptions prototype
+   One white plate, dividers between items, caps label + big number + note.
+   -------------------------------------------------------------------------- */
+
+.kpi-plate {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-lowest);
+  border: 1px solid rgba(225, 232, 253, 0.6);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  padding: 24px;
+}
+
+.kpi-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+  min-width: 0;
+}
+.kpi-item + .kpi-item { border-top: 1px solid var(--surface-high); }
+
+.kpi-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+}
+.kpi-label .material-symbols-outlined { font-size: 16px; color: var(--primary); }
+.kpi-label-right { margin-left: auto; }
+
+.kpi-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--on-surface);
+  font-variant-numeric: tabular-nums;
+}
+.kpi-value--primary { color: var(--primary); }
+.kpi-value--secondary { color: var(--secondary); }
+.kpi-value--error { color: var(--error); }
+
+.kpi-unit {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  color: var(--on-surface-variant);
+}
+
+.kpi-suffix {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--on-surface-variant);
+}
+
+.kpi-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--on-surface-variant);
+  margin-top: 4px;
+  min-width: 0;
+}
+.kpi-note--split { justify-content: space-between; }
+
+@media (min-width: 768px) {
+  .kpi-plate { flex-direction: row; align-items: center; }
+  .kpi-item { flex: 1 1 0; padding: 0 24px; }
+  .kpi-item + .kpi-item {
+    border-top: 0;
+    border-left: 1px solid var(--surface-high);
+  }
+  .kpi-item:first-child { padding-left: 0; }
+  .kpi-item:last-child { padding-right: 0; }
+}
+
+@media (min-width: 1024px) {
+  .kpi-value {
+    font-size: 36px;
+    line-height: 44px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Shared app shell — Sidebar & TopDashboard responsive behavior
+   Sidebar is off-canvas below 1024px and toggled from the TopDashboard.
+   -------------------------------------------------------------------------- */
+
+#finai-sidebar { transition: transform 0.2s var(--ease); }
+
+#finai-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.4);
+  backdrop-filter: blur(2px);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease);
+}
+
+@media (max-width: 1023.98px) {
+  #finai-sidebar { transform: translateX(-100%); }
+  body.sidebar-open #finai-sidebar {
+    transform: translateX(0);
+    box-shadow: 0 20px 32px -8px rgba(15, 23, 42, 0.25);
+  }
+  body.sidebar-open #finai-backdrop { opacity: 1; pointer-events: auto; }
+  #layout-shell { padding-left: 0 !important; }
+}
+
+@media (min-width: 1024px) {
+  #finai-backdrop { display: none; }
+}
+
+/* Accessible focus for shared navigation links */
+a[data-path]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-card);
+}
+
+/* Page load transition — hide page until layout is assembled, then reveal calmly.
+   The inline <style> in <head> sets html{opacity:0}; layout.js adds .layout-ready
+   after injecting the sidebar + top dashboard so the user never sees an
+   intermediate unstyled state (no FOUC, no sidebar flash, no layout jump). */
+html.layout-ready {
+  opacity: 1;
+  transition: opacity 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dropdown select (polish) */
+.finai-select { position: relative; }
+.finai-select-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  min-width: 100%;
+  width: max-content;
+  z-index: 30;
+  background: var(--surface-lowest);
+  border: 1px solid rgba(225, 232, 253, 0.8);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  padding: 4px;
+  display: none;
+}
+.finai-select-menu.is-open { display: block; }
+.finai-option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-control);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--on-surface);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition: background-color 0.15s var(--ease);
+}
+.finai-option:hover { background: var(--surface-low); }
+.finai-option.is-selected { background: var(--surface-low); color: var(--primary); font-weight: 600; }
+.finai-option .material-symbols-outlined { font-size: 18px; }
+
+/* Transaction row selection — checked rows get the same green treatment as Ozon.
+   Uses inset box-shadow for the left bar (no extra DOM element needed). */
+.tx-row { position: relative; transition: background-color 0.15s var(--ease), box-shadow 0.15s var(--ease); }
+.tx-row.is-selected {
+  background-color: rgba(167, 244, 189, 0.14);
+  box-shadow: inset 3px 0 0 0 var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #finai-sidebar,
+  #finai-backdrop,
+  #layout-main,
+  .btn,
+  .pill {
+    transition: none;
+    animation: none;
+  }
+}
+

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Транзакции — FinAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="assets/css/finai.css" rel="stylesheet">
+<style>html{opacity:0}</style>
+<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/js/tailwind-config.js"></script>
+</head>
+<body class="bg-background font-body-md text-body-md text-on-surface" data-page="transactions">
+<div id="page-content" class="flex flex-col w-full">
+
+<!-- 1. Header & Quick Actions -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-lg">
+  <div>
+    <div class="flex items-center gap-space-sm flex-wrap mb-1">
+      <h1 class="page-title">Транзакции</h1>
+      <span class="inline-flex items-center px-space-sm py-0.5 rounded-full font-label-caps text-label-caps bg-surface-container text-on-surface-variant font-medium">Выписка за сентябрь 2026</span>
+    </div>
+    <p class="page-subtitle">Детализация и нейросетевая классификация всех банковских операций</p>
+  </div>
+  <div class="flex items-center gap-space-sm self-start lg:self-auto">
+    <button class="btn btn-secondary" id="exportCsvBtn" type="button">
+      <span class="material-symbols-outlined">download</span>
+      <span>Экспорт CSV</span>
+    </button>
+    <button class="btn btn-primary" type="button" data-navigate="import">
+      <span class="material-symbols-outlined">add</span>
+      <span>Загрузить выписку</span>
+    </button>
+  </div>
+</div>
+
+<!-- 2. Summary Metrics Row (shared Subscriptions KPI prototype) -->
+<section class="kpi-plate mb-space-lg" aria-label="Сводка по операциям за сентябрь 2026">
+  <div class="kpi-item">
+    <div class="kpi-label"><span>Все операции</span><span class="material-symbols-outlined text-outline">swap_horiz</span></div>
+    <div class="kpi-value-row"><span class="kpi-value">1 248</span><span class="kpi-suffix">активностей</span></div>
+    <div class="kpi-note"><span>Списания, пополнения и СБП</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-label"><span>Расходы</span><span class="w-2 h-2 rounded-full bg-error shrink-0"></span></div>
+    <div class="kpi-value-row"><span class="kpi-value">−62 350 ₽</span></div>
+    <div class="kpi-note"><span>742 операции за сентябрь</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-label"><span class="text-primary">Доходы</span><span class="w-2 h-2 rounded-full bg-primary shrink-0"></span></div>
+    <div class="kpi-value-row"><span class="kpi-value kpi-value--primary">+85 400 ₽</span></div>
+    <div class="kpi-note"><span>96 операций поступлений</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-label"><span>Переводы</span><span class="material-symbols-outlined text-outline">sync_alt</span></div>
+    <div class="kpi-value-row"><span class="kpi-value">34 200 ₽</span></div>
+    <div class="kpi-note"><span>410 операций между счетами</span></div>
+  </div>
+</section>
+
+<!-- 3. Dynamic Filter Canvas (shared Transactions control prototype) -->
+<div class="card filter-canvas mb-space-lg">
+  <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+    <div class="flex items-center gap-space-xs flex-wrap">
+      <div class="finai-select">
+        <button class="btn btn-secondary" type="button" data-dropdown-trigger="txDateMenu">
+          <span class="material-symbols-outlined text-outline">calendar_today</span>
+          <span class="data-dropdown-label" data-dropdown-label-of="txDateMenu">01.09.2026 — 30.09.2026</span>
+          <span class="material-symbols-outlined text-outline">arrow_drop_down</span>
+        </button>
+        <div class="finai-select-menu" id="txDateMenu">
+          <button class="finai-option is-selected" type="button" data-value="2026-09"><span class="finai-option-label">Сентябрь 2026</span></button>
+          <button class="finai-option" type="button" data-value="2026-08"><span class="finai-option-label">Август 2026</span></button>
+          <button class="finai-option" type="button" data-value="2026-07"><span class="finai-option-label">Июль 2026</span></button>
+          <button class="finai-option" type="button" data-value="2026-06"><span class="finai-option-label">Июнь 2026</span></button>
+        </div>
+      </div>
+      <div class="finai-select">
+        <button class="btn btn-secondary" type="button" data-dropdown-trigger="txCategoryMenu">
+          <span class="material-symbols-outlined text-outline">filter_list</span>
+          <span class="data-dropdown-label" data-dropdown-label-of="txCategoryMenu">Все категории</span>
+          <span class="material-symbols-outlined text-outline">expand_more</span>
+        </button>
+        <div class="finai-select-menu" id="txCategoryMenu">
+          <button class="finai-option is-selected" type="button" data-value="all"><span class="finai-option-label">Все категории</span></button>
+          <button class="finai-option" type="button" data-value="Продукты"><span class="finai-option-label">Продукты</span></button>
+          <button class="finai-option" type="button" data-value="Еда и доставка"><span class="finai-option-label">Еда и доставка</span></button>
+          <button class="finai-option" type="button" data-value="Покупки"><span class="finai-option-label">Покупки</span></button>
+          <button class="finai-option" type="button" data-value="Кафе и рестораны"><span class="finai-option-label">Кафе и рестораны</span></button>
+          <button class="finai-option" type="button" data-value="Доход"><span class="finai-option-label">Доход</span></button>
+          <button class="finai-option" type="button" data-value="Переводы"><span class="finai-option-label">Переводы</span></button>
+          <button class="finai-option" type="button" data-value="Не определена"><span class="finai-option-label">Не определена</span></button>
+        </div>
+      </div>
+      <button class="btn btn-ghost" id="btnResetFilters" type="button">
+        <span class="material-symbols-outlined">restart_alt</span>
+        <span>Сбросить</span>
+      </button>
+    </div>
+  </div>
+  <div class="flex flex-wrap items-center justify-between gap-space-sm">
+    <div class="pill-group" id="txTypeFilter" role="group" aria-label="Тип операций">
+      <button class="pill is-active" type="button" data-type="all">Все</button>
+      <button class="pill" type="button" data-type="expense">Расходы</button>
+      <button class="pill" type="button" data-type="income">Доходы</button>
+      <button class="pill" type="button" data-type="transfer">Переводы</button>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Split-View Workspace: Ledger & Detail Drawer -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left Column: Transactions Ledger (approx 68%) -->
+<div class="card lg:col-span-8 flex flex-col overflow-hidden">
+<!-- Table Top Controls -->
+<div class="p-space-md flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-space-sm">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551] cursor-pointer" type="checkbox">
+<span class="font-title-sm text-title-sm text-on-surface">Операции по счетам Сбера</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="txHeaderCount">(1 248 найдено)</span>
+</div>
+</div>
+<!-- Transaction Rows Container -->
+<div class="divide-y divide-surface-container-low flex flex-col" id="txList">
+<!-- Row 1: ВкусВилл -->
+<div class="group tx-row flex items-center justify-between p-space-md hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="flex items-center gap-space-md min-w-0">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-tabular-num text-tabular-num text-on-surface-variant w-10 shrink-0">05.09</span>
+<div class="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-headline-md text-headline-md shrink-0">
+              ВВ
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">ВкусВилл</span>
+<span class="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps">
+                  MCC 5411
+                </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Покупка продуктов в супермаркете</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg shrink-0 pl-space-sm">
+<div class="hidden sm:flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md">Продукты</span>
+<div class="flex items-center gap-0.5 text-primary text-[12px] font-medium pt-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="">AI 99%</span>
+</div>
+</div>
+<span class="font-balance-lg text-title-sm sm:text-headline-md text-on-surface tabular-nums tracking-tight">−1 245 ₽</span>
+</div>
+</div>
+<!-- Row 2: Яндекс Еда -->
+<div class="group tx-row flex items-center justify-between p-space-md hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="flex items-center gap-space-md min-w-0">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-tabular-num text-tabular-num text-on-surface-variant w-10 shrink-0">05.09</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-md text-headline-md shrink-0 font-bold">
+              ЯЕ
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Яндекс Еда</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Заказ еды delivery • Ресторан «Сыроварня»</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg shrink-0 pl-space-sm">
+<div class="hidden sm:flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md">Еда и доставка</span>
+<div class="flex items-center gap-0.5 text-primary text-[12px] font-medium pt-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="">AI 98%</span>
+</div>
+</div>
+<span class="font-balance-lg text-title-sm sm:text-headline-md text-on-surface tabular-nums tracking-tight">−890 ₽</span>
+</div>
+</div>
+
+<!-- Row 3: ACTIVE ROW SELECTED (Ozon - Requires attention) -->
+<div class="group tx-row is-selected flex items-center justify-between p-space-md hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="flex items-center gap-space-md min-w-0">
+<input checked class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-tabular-num text-tabular-num text-on-surface font-semibold w-10 shrink-0">04.09</span>
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-headline-md text-headline-md shrink-0 font-bold">
+              OZ
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-bold truncate">Ozon Marketplace</span>
+<span class="px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-caps text-label-caps font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">warning</span>
+                  Проверить
+                </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">MCC 5399 / OZON RU PAY MOSCOW</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg shrink-0 pl-space-sm">
+<div class="hidden sm:flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-md text-label-md">Покупки</span>
+<div class="flex items-center gap-0.5 text-tertiary text-[12px] font-semibold pt-0.5">
+<span class="">AI 82%</span>
+</div>
+</div>
+<span class="font-balance-lg text-title-sm sm:text-headline-md text-on-surface tabular-nums tracking-tight font-bold">−2 340 ₽</span>
+</div>
+</div>
+<!-- Row 4: ИП Смирнов (Unknown merchant) -->
+<div class="group tx-row flex items-center justify-between p-space-md hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="flex items-center gap-space-md min-w-0">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-tabular-num text-tabular-num text-on-surface-variant w-10 shrink-0">04.09</span>
+<div class="w-10 h-10 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center font-headline-md text-headline-md shrink-0 font-semibold">
+              ??
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">ИП Смирнов А. В.</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps">
+                  СБП Терминал
+                </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Оплата товаров в розничной точке</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg shrink-0 pl-space-sm">
+<div class="hidden sm:flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md">Категория ?</span>
+<div class="flex items-center gap-0.5 text-outline text-[12px] font-medium pt-0.5">
+<span class="">AI 64%</span>
+</div>
+</div>
+<span class="font-balance-lg text-title-sm sm:text-headline-md text-on-surface tabular-nums tracking-tight">−3 150 ₽</span>
+</div>
+</div>
+<!-- Row 5: Зачисление зарплаты (Income) -->
+<div class="group tx-row flex items-center justify-between p-space-md hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="flex items-center gap-space-md min-w-0">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-tabular-num text-tabular-num text-on-surface-variant w-10 shrink-0">03.09</span>
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-headline-md text-headline-md shrink-0 font-bold">
+              ЗП
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">ООО «Технологии и Решения»</span>
+<span class="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps">
+                  Зарплатный проект
+                </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Аванс за первую половину месяца по реестру #8401</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg shrink-0 pl-space-sm">
+<div class="hidden sm:flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md">Доход</span>
+<div class="flex items-center gap-0.5 text-primary text-[12px] font-medium pt-0.5">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span class="">AI 100%</span>
+</div>
+</div>
+<span class="font-balance-lg text-title-sm sm:text-headline-md text-primary tabular-nums tracking-tight font-bold">+42 700 ₽</span>
+</div>
+</div>
+
+<!-- Row 6: Перевод Ивану (СБП) -->
+<div class="group tx-row flex items-center justify-between p-space-md hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="flex items-center gap-space-md min-w-0">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-tabular-num text-tabular-num text-on-surface-variant w-10 shrink-0">02.09</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-md text-headline-md shrink-0 font-bold">
+              ИП
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Перевод Ивану П.</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface font-label-caps text-label-caps">СБП</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Перевод по СБП клиенту Сбера • «За аренду студии»</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg shrink-0 pl-space-sm">
+<div class="hidden sm:flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md">Переводы</span>
+<div class="flex items-center gap-0.5 text-primary text-[12px] font-medium pt-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="">AI 99%</span>
+</div>
+</div>
+<span class="font-balance-lg text-title-sm sm:text-headline-md text-on-surface tabular-nums tracking-tight">−3 000 ₽</span>
+</div>
+</div>
+<!-- Row 7: Пятёрочка -->
+<div class="group tx-row flex items-center justify-between p-space-md hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="flex items-center gap-space-md min-w-0">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-tabular-num text-tabular-num text-on-surface-variant w-10 shrink-0">02.09</span>
+<div class="w-10 h-10 rounded-full bg-error-container text-on-error-container flex items-center justify-center font-headline-md text-headline-md shrink-0 font-bold">
+              П5
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Пятёрочка</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Продуктовый ритейл • Магазин у дома</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg shrink-0 pl-space-sm">
+<div class="hidden sm:flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md">Продукты</span>
+<div class="flex items-center gap-0.5 text-primary text-[12px] font-medium pt-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="">AI 99%</span>
+</div>
+</div>
+<span class="font-balance-lg text-title-sm sm:text-headline-md text-on-surface tabular-nums tracking-tight">−640 ₽</span>
+</div>
+</div>
+<!-- Row 8: Додо Пицца -->
+<div class="group tx-row flex items-center justify-between p-space-md hover:bg-surface-container-low/60 transition-colors cursor-pointer">
+<div class="flex items-center gap-space-md min-w-0">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-tabular-num text-tabular-num text-on-surface-variant w-10 shrink-0">01.09</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-headline-md text-headline-md shrink-0 font-bold">
+              ДП
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold truncate">Додо Пицца</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Оплата заказа в приложении с доставкой</span>
+</div>
+</div>
+<div class="flex items-center gap-space-lg shrink-0 pl-space-sm">
+<div class="hidden sm:flex flex-col items-end">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface font-label-md text-label-md">Кафе и рестораны</span>
+<div class="flex items-center gap-0.5 text-primary text-[12px] font-medium pt-0.5">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="">AI 97%</span>
+</div>
+</div>
+<span class="font-balance-lg text-title-sm sm:text-headline-md text-on-surface tabular-nums tracking-tight">−1 190 ₽</span>
+</div>
+</div>
+</div>
+<!-- Empty State (no rows match the active filters) -->
+<div class="hidden p-space-md flex flex-col items-center gap-space-xs text-body-sm text-on-surface-variant" id="txEmptyState">
+<span class="material-symbols-outlined text-outline text-[24px] shrink-0">search_off</span>
+<span class="">Нет операций за выбранный период или по заданным фильтрам</span>
+</div>
+<!-- Pagination Footer -->
+<div class="p-space-md bg-surface-container-lowest flex flex-col sm:flex-row items-center justify-between gap-space-sm">
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="txRangeLabel"></span>
+<div class="flex items-center gap-1" id="txPagination"></div>
+</div>
+</div>
+
+<!-- Right Column: Detail Panel (approx 32%, Sticky) -->
+<div class="lg:col-span-4 sticky top-20 flex flex-col gap-space-md">
+<div class="card p-space-lg flex flex-col gap-space-lg">
+<!-- Panel Header -->
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<h2 class="section-title">Детали операции</h2>
+</div>
+<button class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" title="Закрыть панель" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Status Pill -->
+<div class="flex items-center justify-between p-space-sm bg-tertiary-fixed/30 rounded-xl">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[20px]">info</span>
+<span class="font-title-sm text-title-sm text-on-surface font-medium" id="detailStatusText">Требует подтверждения</span>
+</div>
+<span class="font-label-caps text-label-caps font-bold px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed">
+            AI 82%
+          </span>
+</div>
+<!-- Hero Sum & Card Info -->
+<div class="flex flex-col gap-space-2xs">
+<span class="font-balance-lg text-balance-lg text-on-surface tabular-nums tracking-tight">−2 340 ₽</span>
+<div class="flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm">
+<span class="">04 сентября 2026, 14:32</span>
+<span class="">•</span>
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">credit_card</span>
+              СберКарта •• 4892
+            </span>
+</div>
+</div>
+<!-- Structured Attributes -->
+<div class="flex flex-col gap-space-md">
+<div class="flex flex-col gap-1.5 p-space-sm bg-surface-container-low rounded-xl">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Исходная запись банка</span>
+<code class="font-tabular-num text-[12px] text-on-surface break-all bg-surface-container-lowest px-2.5 py-2 rounded border border-surface-container-high">SBERBANK MOSCOW &gt; OZON.RU RU MCC5300 12.09.26 / TRAN ID: 94820148</code>
+</div>
+<div class="flex flex-col gap-space-xs p-space-sm bg-secondary-fixed/20 rounded-xl border border-secondary-fixed/40">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-secondary font-semibold uppercase tracking-wider">Интерпретация FinAI</span>
+<span class="inline-flex items-center gap-1 text-[12px] text-primary font-semibold">
+<span class="material-symbols-outlined text-[14px]">verified</span> 94% уверенность (автоматически)</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-[18px] text-on-surface font-bold">Ozon</span>
+<span class="text-on-surface-variant">— Маркетплейс</span>
+</div>
+<span class="px-space-sm py-1 rounded-lg bg-surface-container-lowest text-on-surface font-title-sm text-title-sm shadow-sm font-medium" id="detailCategoryPill">Покупки</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant pt-1 leading-relaxed">Автоматически сопоставлено с категорией «Покупки» по сигнатуре мерчанта и истории транзакций.</p>
+<div class="flex flex-wrap gap-1.5 pt-1" id="detailCategoryOptions">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-lowest hover:bg-secondary-fixed text-on-surface font-label-md text-label-md transition-colors" type="button" data-cat="Электроника">Электроника</button>
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-lowest hover:bg-secondary-fixed text-on-surface font-label-md text-label-md transition-colors" type="button" data-cat="Дом и сад">Дом и сад</button>
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-lowest hover:bg-secondary-fixed text-on-surface font-label-md text-label-md transition-colors" type="button" data-cat="Подарки">Подарки</button>
+</div>
+</div>
+<label class="flex items-center gap-space-sm cursor-pointer select-none py-space-xs">
+<input checked class="w-4 h-4 rounded text-primary focus:ring-primary accent-[#00A551]" type="checkbox">
+<span class="font-body-sm text-body-sm text-on-surface">Запомнить правило для похожих платежей Ozon</span>
+</label>
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<button class="btn btn-primary w-full" id="detailConfirmBtn" type="button">
+<span class="material-symbols-outlined">check_circle</span>
+<span class="">Подтвердить категорию</span>
+</button>
+<button class="btn btn-secondary w-full" id="detailEditBtn" type="button">
+<span class="material-symbols-outlined">edit</span>
+<span class="">Изменить категорию</span>
+</button>
+</div>
+</div>
+<!-- Previous History Context with same Merchant -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">
+            История операций в Ozon
+          </span>
+<div class="flex flex-col divide-y divide-surface-container-low">
+<div class="py-2 flex items-center justify-between text-body-sm">
+<div class="flex flex-col">
+<span class="font-title-sm text-[13px] text-on-surface">22 августа 2026</span>
+<span class="text-on-surface-variant text-[11px]">Категория: Электроника</span>
+</div>
+<span class="font-tabular-num text-tabular-num text-on-surface font-semibold">−8 990 ₽</span>
+</div>
+<div class="py-2 flex items-center justify-between text-body-sm">
+<div class="flex flex-col">
+<span class="font-title-sm text-[13px] text-on-surface">14 августа 2026</span>
+<span class="text-on-surface-variant text-[11px]">Категория: Покупки</span>
+</div>
+<span class="font-tabular-num text-tabular-num text-on-surface font-semibold">−1 450 ₽</span>
+</div>
+<div class="py-2 flex items-center justify-between text-body-sm">
+<div class="flex flex-col">
+<span class="font-title-sm text-[13px] text-on-surface">29 июля 2026</span>
+<span class="text-on-surface-variant text-[11px]">Категория: Дом и сад</span>
+</div>
+<span class="font-tabular-num text-tabular-num text-on-surface font-semibold">−3 120 ₽</span>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+</div>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/interactions.js"></script>
+<script>
+  (function () {
+    var TX = [
+      { name: 'ВкусВилл', type: 'expense', cat: 'Продукты', date: '2026-09' },
+      { name: 'Яндекс Еда', type: 'expense', cat: 'Еда и доставка', date: '2026-09' },
+      { name: 'Ozon Marketplace', type: 'expense', cat: 'Покупки', date: '2026-09' },
+      { name: 'ИП Смирнов А. В.', type: 'expense', cat: 'Не определена', date: '2026-09' },
+      { name: 'ООО «Технологии и Решения»', type: 'income', cat: 'Доход', date: '2026-09' },
+      { name: 'Перевод Ивану П.', type: 'transfer', cat: 'Переводы', date: '2026-09' },
+      { name: 'Пятёрочка', type: 'expense', cat: 'Продукты', date: '2026-09' },
+      { name: 'Додо Пицца', type: 'expense', cat: 'Кафе и рестораны', date: '2026-09' }
+    ];
+    var PAGE_SIZE = 6;
+    var state = { type: 'all', cat: 'all', date: '2026-09', page: 1 };
+    var rows = Array.prototype.slice.call(document.querySelectorAll('#txList > .group'));
+    var range = document.getElementById('txRangeLabel');
+    var pagination = document.getElementById('txPagination');
+    var headerCount = document.getElementById('txHeaderCount');
+    var empty = document.getElementById('txEmptyState');
+
+    rows.forEach(function (r) {
+      var nameEl = r.querySelector('span.font-title-sm');
+      var name = nameEl ? nameEl.textContent.trim() : '';
+      var rec = null;
+      for (var i = 0; i < TX.length; i++) { if (TX[i].name === name) { rec = TX[i]; break; } }
+      rec = rec || { type: 'expense', cat: 'Не определена', date: '2026-09' };
+      r.setAttribute('data-name', name);
+      r.setAttribute('data-type', rec.type);
+      r.setAttribute('data-cat', rec.cat);
+      r.setAttribute('data-date', rec.date);
+    });
+
+    function filtered() {
+      return rows.filter(function (r) {
+        if (state.type !== 'all' && r.getAttribute('data-type') !== state.type) { return false; }
+        if (state.cat !== 'all' && r.getAttribute('data-cat') !== state.cat) { return false; }
+        if (state.date !== '2026-09') { return false; }
+        return true;
+      });
+    }
+
+    function setTypeActive(t) {
+      Array.prototype.forEach.call(document.querySelectorAll('#txTypeFilter .pill'), function (p) {
+        p.classList.toggle('is-active', p.getAttribute('data-type') === t);
+      });
+    }
+
+    function setMenuValue(id, value, label) {
+      var menu = document.getElementById(id);
+      var lbl = document.querySelector('[data-dropdown-label-of="' + id + '"]');
+      if (lbl) { lbl.textContent = label; }
+      if (menu) {
+        Array.prototype.forEach.call(menu.querySelectorAll('.finai-option'), function (o) {
+          o.classList.toggle('is-selected', o.getAttribute('data-value') === value);
+        });
+      }
+    }
+
+    function buildPagination(pages) {
+      if (!pagination) { return; }
+      var html = '';
+      html += '<button class="px-3 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center gap-1"' +
+        (state.page <= 1 ? ' disabled' : '') + ' type="button" data-page="' + (state.page - 1) + '"><span class="material-symbols-outlined text-[16px]">chevron_left</span><span>Назад</span></button>';
+      for (var p = 1; p <= pages; p++) {
+        var cls = (p === state.page) ? 'bg-primary text-on-primary' : 'bg-surface-container-low text-on-surface hover:bg-surface-container';
+        html += '<button class="w-8 h-8 rounded-lg ' + cls + ' font-label-md text-label-md" type="button" data-page="' + p + '">' + p + '</button>';
+      }
+      html += '<button class="px-3 py-1.5 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center gap-1"' +
+        (state.page >= pages ? ' disabled' : '') + ' type="button" data-page="' + (state.page + 1) + '"><span>Вперед</span><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>';
+      pagination.innerHTML = html;
+    }
+
+    function applyFilter() {
+      var list = filtered();
+      var total = list.length;
+      var pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+      if (state.page > pages) { state.page = pages; }
+      if (state.page < 1) { state.page = 1; }
+      var start = (state.page - 1) * PAGE_SIZE;
+      var pageRows = list.slice(start, start + PAGE_SIZE);
+      rows.forEach(function (r) { r.style.display = 'none'; });
+      pageRows.forEach(function (r) { r.style.display = ''; });
+      if (empty) { empty.style.display = total === 0 ? '' : 'none'; }
+      if (range) {
+        range.textContent = total === 0 ? 'Показано 0 операций' : 'Показано ' + (start + 1) + '–' + (start + pageRows.length) + ' из ' + total + ' операций';
+      }
+      if (headerCount) { headerCount.textContent = '(' + total + ' найдено)'; }
+      buildPagination(pages);
+    }
+
+    var typeFilter = document.getElementById('txTypeFilter');
+    if (typeFilter) {
+      typeFilter.addEventListener('click', function (e) {
+        if (!e.target || !e.target.closest) { return; }
+        var btn = e.target.closest('button[data-type]');
+        if (!btn) { return; }
+        state.type = btn.getAttribute('data-type');
+        state.page = 1;
+        setTypeActive(state.type);
+        applyFilter();
+      });
+    }
+
+    var resetBtn = document.getElementById('btnResetFilters');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function () {
+        state.type = 'all'; state.cat = 'all'; state.date = '2026-09'; state.page = 1;
+        setTypeActive('all');
+        setMenuValue('txDateMenu', '2026-09', '01.09.2026 — 30.09.2026');
+        setMenuValue('txCategoryMenu', 'all', 'Все категории');
+        applyFilter();
+      });
+    }
+
+    if (window.FinAI && window.FinAI.onSelect) {
+      window.FinAI.onSelect('txDateMenu', function (value) { state.date = value; state.page = 1; applyFilter(); });
+      window.FinAI.onSelect('txCategoryMenu', function (value) { state.cat = value; state.page = 1; applyFilter(); });
+    }
+
+    if (pagination) {
+      pagination.addEventListener('click', function (e) {
+        if (!e.target || !e.target.closest) { return; }
+        var btn = e.target.closest('button[data-page]');
+        if (!btn || btn.disabled) { return; }
+        var p = parseInt(btn.getAttribute('data-page'), 10);
+        var pages = Math.max(1, Math.ceil(filtered().length / PAGE_SIZE));
+        if (p >= 1 && p <= pages) { state.page = p; applyFilter(); }
+      });
+    }
+
+    var exportBtn = document.getElementById('exportCsvBtn');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', function () {
+        var list = filtered();
+        var lines = ['Дата;Получатель;Категория;Тип;Сумма'];
+        list.forEach(function (r) {
+          var dateEl = r.querySelector('span.font-tabular-num.w-10');
+          var date = dateEl ? dateEl.textContent.trim() : '';
+          var name = r.getAttribute('data-name');
+          var cat = r.getAttribute('data-cat');
+          var raw = { expense: 'Расход', income: 'Доход', transfer: 'Перевод' }[r.getAttribute('data-type')] || '';
+          var amtEl = r.querySelector('span.font-balance-lg');
+          var amt = amtEl ? amtEl.textContent.trim() : '';
+          lines.push([date, name, cat, raw, amt].join(';'));
+        });
+        var csv = '\uFEFF' + lines.join('\r\n');
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'finai_transactions.csv';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      });
+    }
+
+    var statusSpan = document.getElementById('detailStatusText');
+    var catPill = document.getElementById('detailCategoryPill');
+    var catOptions = document.getElementById('detailCategoryOptions');
+    var confirmBtn = document.getElementById('detailConfirmBtn');
+    var editBtn = document.getElementById('detailEditBtn');
+    var ozonRow = null;
+    for (var rn = 0; rn < rows.length; rn++) { if (rows[rn].getAttribute('data-name') === 'Ozon Marketplace') { ozonRow = rows[rn]; break; } }
+
+    if (catOptions) {
+      catOptions.addEventListener('click', function (e) {
+        if (!e.target || !e.target.closest) { return; }
+        var btn = e.target.closest('button[data-cat]');
+        if (!btn) { return; }
+        var cat = btn.getAttribute('data-cat');
+        if (catPill) { catPill.textContent = cat; }
+        if (ozonRow) { ozonRow.setAttribute('data-cat', cat); }
+        if (statusSpan) { statusSpan.textContent = 'Требует подтверждения'; }
+      });
+    }
+    if (confirmBtn && statusSpan) {
+      confirmBtn.addEventListener('click', function () {
+        statusSpan.textContent = 'Подтверждено';
+        if (ozonRow) {
+          var badge = ozonRow.querySelector('.bg-tertiary-fixed');
+          if (badge) { badge.textContent = 'Подтверждено'; }
+        }
+      });
+    }
+    if (editBtn && statusSpan) {
+      editBtn.addEventListener('click', function () { statusSpan.textContent = 'Требует подтверждения'; });
+    }
+
+    applyFilter();
+  })();
+</script>
+</body>
+</html>

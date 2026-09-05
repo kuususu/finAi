@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Подписки — FinAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="assets/css/finai.css" rel="stylesheet">
+<style>html{opacity:0}</style>
+<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/js/tailwind-config.js"></script>
+</head>
+<body class="bg-background font-body-md text-body-md text-on-surface" data-page="subscriptions">
+<div id="page-content" class="flex flex-col w-full">
+
+<!-- Page Header & Action Bar -->
+<section class="flex flex-col md:flex-row md:items-center md:justify-between gap-space-md pb-space-lg">
+  <div class="flex flex-col gap-space-2xs">
+    <div class="flex items-center gap-space-xs">
+      <h1 class="page-title">Подписки</h1>
+      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps uppercase font-semibold tracking-wider">FinAI Radar</span>
+    </div>
+    <p class="page-subtitle">Контроль регулярных списаний, обнаруженных алгоритмами FinAI по банковским выпискам</p>
+  </div>
+</section>
+
+<!-- Summary KPI Row (shared KPI prototype) -->
+<section class="kpi-plate mb-space-lg" aria-label="Сводка по подпискам">
+  <div class="kpi-item">
+    <div class="kpi-label"><span>Активных подписок</span><span class="material-symbols-outlined">verified</span></div>
+    <div class="kpi-value-row"><span class="kpi-value">7</span><span class="kpi-suffix">сервисов</span></div>
+    <div class="kpi-note"><span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span><span>6 подтверждены • 1 на проверке</span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-label"><span>В месяц</span><span class="kpi-label-right inline-flex items-center gap-0.5 text-xs font-medium text-outline bg-surface-container-low px-1.5 py-0.5 rounded normal-case tracking-normal">0% к авг.</span></div>
+    <div class="kpi-value-row"><span class="kpi-value">3 490 ₽</span></div>
+    <div class="kpi-note"><span>8.4% от ежемесячных расходов</span><span class="w-16 bg-surface-container-high h-1.5 rounded-full overflow-hidden inline-block"><span class="bg-primary h-full rounded-full block" style="width: 8.4%;"></span></span></div>
+  </div>
+  <div class="kpi-item">
+    <div class="kpi-label"><span>В год (прогноз)</span><span class="material-symbols-outlined text-tertiary">event_upcoming</span></div>
+    <div class="kpi-value-row"><span class="kpi-value">41 880 ₽</span></div>
+    <div class="kpi-note kpi-note--split"><span>Прогноз на 12 мес.</span><span class="font-tabular-num text-outline">~3 490 ₽ × 12</span></div>
+  </div>
+</section>
+
+<!-- Sber-Style FinAI Detection Card (Active AI Discovery) -->
+<section class="card border-secondary-container/80 p-space-md flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md mb-space-lg">
+  <div class="flex items-start gap-space-md">
+    <div class="w-10 h-10 rounded-lg bg-secondary-container/40 text-primary flex items-center justify-center flex-shrink-0">
+      <span class="material-symbols-outlined text-2xl">search_insights</span>
+    </div>
+    <div class="flex flex-col gap-0.5">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="font-label-caps text-label-caps bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded font-semibold uppercase">Предварительная находка алгоритма</span>
+        <h3 class="font-title-sm text-title-sm text-on-surface font-semibold">Возможная новая подписка: Ozon Premium</h3>
+      </div>
+      <p class="font-body-md text-body-md text-on-surface-variant max-w-2xl leading-relaxed">
+        Обнаружено 3 ежемесячных списания по <strong class="text-on-surface font-semibold">199 ₽</strong> (последнее 04.09.2026, СберКарта •• 4892). Подтвердите, чтобы включить в расчет регулярных трат.
+      </p>
+    </div>
+  </div>
+  <div class="flex items-center gap-2 flex-wrap self-end md:self-center flex-shrink-0">
+    <button class="btn btn-primary" type="button">
+      <span class="material-symbols-outlined text-base">check</span>
+      <span>Это подписка</span>
+    </button>
+    <button class="btn btn-secondary" type="button">
+      <span class="material-symbols-outlined text-base">close</span>
+      <span>Разовый платёж</span>
+    </button>
+    <button class="text-primary hover:underline font-title-sm text-body-sm px-2 py-1 transition-colors" type="button" data-navigate="transactions">
+      Операции
+    </button>
+  </div>
+</section>
+
+<!-- Ledger Filter Bar -->
+<div class="card p-space-sm flex items-center justify-between gap-space-sm flex-wrap mb-space-lg">
+  <div class="max-w-full overflow-x-auto">
+    <div class="pill-group" id="subTypeFilter" role="group" aria-label="Категории подписок">
+      <button class="pill is-active" type="button" data-sub="all">Все (7)</button>
+      <button class="pill" type="button" data-sub="Развлечения">Развлечения (3)</button>
+      <button class="pill" type="button" data-sub="Сервисы и AI">Сервисы и AI (2)</button>
+      <button class="pill" type="button" data-sub="Спорт">Спорт (1)</button>
+      <button class="pill" type="button" data-sub="Связь">Связь (1)</button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content Grid: Ledger & Spending Analysis -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- Left Column (8 cols): Interactive Subscription Ledger -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+
+<!-- Section 1: Requires Review / На проверке -->
+<div class="card border-amber-500/20 overflow-hidden flex flex-col" id="pendingCard">
+  <div class="px-space-md py-2.5 bg-amber-500/10 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+      <span class="font-title-sm text-body-sm font-semibold text-on-surface">Требуют проверки (1)</span>
+      <span class="text-body-sm text-on-surface-variant">— обнаружено регулярное списание</span>
+    </div>
+    <span class="font-label-caps text-label-caps uppercase text-amber-700 font-semibold">199 ₽ / мес</span>
+  </div>
+  <div class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors">
+    <div class="flex items-center gap-space-md">
+      <div class="w-10 h-10 rounded-xl bg-sky-500/15 text-sky-600 flex items-center justify-center font-bold text-base shadow-sm">
+        OZ
+      </div>
+      <div class="flex flex-col">
+        <div class="flex items-center gap-2">
+          <span class="font-title-sm text-title-sm text-on-surface font-semibold">Ozon Premium</span>
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-700 text-body-sm font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            Кандидат в подписки
+          </span>
+        </div>
+        <div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+          <span class="">Маркетплейс</span>
+          <span class="">•</span>
+          <span class="flex items-center gap-1 text-outline">
+            <span class="material-symbols-outlined text-xs">credit_card</span>
+            СберКарта •• 4892
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-6">
+      <div class="flex flex-col items-end">
+        <span class="font-title-sm text-body-md text-on-surface font-medium">04 октября</span>
+        <span class="font-body-sm text-outline">каждый месяц</span>
+      </div>
+      <div class="flex flex-col items-end w-28">
+        <span class="font-headline-md text-title-sm font-tabular-num text-on-surface font-semibold">199 ₽</span>
+        <span class="font-body-sm text-on-surface-variant">в месяц</span>
+      </div>
+      <div class="flex items-center gap-1">
+        <button class="btn btn-primary btn-sm" type="button">Подтвердить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 2: Verified Subscriptions Table -->
+<div class="card overflow-hidden flex flex-col" id="confirmedList">
+  <div class="px-space-md py-space-sm bg-surface-container-low/40 flex items-center justify-between text-on-surface font-label-caps text-label-caps uppercase tracking-wider font-semibold border-b border-surface-container-high">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-primary"></span>
+      <span class="">Подтверждённые подписки (6)</span>
+    </div>
+    <div class="hidden md:flex items-center gap-16 pr-8 text-on-surface-variant">
+      <span class="">Следующее списание</span>
+      <span class="">Стоимость</span>
+    </div>
+  </div>
+  <div class="flex flex-col divide-y divide-surface-container-high">
+    <!-- Item 1: Яндекс Плюс -->
+    <div class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors">
+      <div class="flex items-center gap-space-md">
+        <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-600 flex items-center justify-center font-headline-md font-bold text-base shadow-sm">Я+</div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-title-sm text-title-sm text-on-surface font-semibold">Яндекс Плюс</span>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-container/50 text-on-secondary-container text-body-sm font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Активна
+            </span>
+          </div>
+          <div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+            <span class="">Развлечения</span>
+            <span class="">•</span>
+            <span class="flex items-center gap-1 text-outline">
+              <span class="material-symbols-outlined text-xs">credit_card</span>
+              СберКарта •• 4892
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="hidden sm:flex flex-col items-end">
+          <span class="font-title-sm text-title-sm text-on-surface font-medium">12 сентября</span>
+          <span class="font-body-sm text-primary font-medium">через 7 дней</span>
+        </div>
+        <div class="flex flex-col items-end w-28">
+          <span class="font-headline-md text-headline-md font-tabular-num text-on-surface font-semibold">499 ₽</span>
+          <span class="font-body-sm text-on-surface-variant">в месяц</span>
+        </div>
+      </div>
+    </div>
+        <!-- Item 2: ChatGPT Plus -->
+    <div class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors">
+      <div class="flex items-center gap-space-md">
+        <div class="w-10 h-10 rounded-xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-headline-md font-bold text-base shadow-sm">
+          <span class="material-symbols-outlined text-xl">psychology</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-title-sm text-title-sm text-on-surface font-semibold">ChatGPT Plus</span>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-container/50 text-on-secondary-container text-body-sm font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Активна
+            </span>
+          </div>
+          <div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+            <span class="">Сервисы и AI</span>
+            <span class="">•</span>
+            <span class="flex items-center gap-1 text-outline">
+              <span class="material-symbols-outlined text-xs">credit_card</span>
+              СберКарта •• 4892
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="hidden sm:flex flex-col items-end">
+          <span class="font-title-sm text-title-sm text-on-surface font-medium">24 сентября</span>
+          <span class="font-body-sm text-on-surface-variant">через 19 дней</span>
+        </div>
+        <div class="flex flex-col items-end w-28">
+          <span class="font-headline-md text-headline-md font-tabular-num text-on-surface font-semibold">2 990 ₽</span>
+          <span class="font-body-sm text-on-surface-variant">20 $ / месяц</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Item 3: Фитнес WorldClass -->
+    <div class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors">
+      <div class="flex items-center gap-space-md">
+        <div class="w-10 h-10 rounded-xl bg-inverse-surface text-inverse-on-surface flex items-center justify-center font-headline-md font-bold text-xs shadow-sm">WC</div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-title-sm text-title-sm text-on-surface font-semibold">Фитнес WorldClass</span>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-container/50 text-on-secondary-container text-body-sm font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Активна
+            </span>
+          </div>
+          <div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+            <span class="">Спорт • Сплит-оплата</span>
+            <span class="">•</span>
+            <span class="flex items-center gap-1 text-outline">
+              <span class="material-symbols-outlined text-xs">credit_card</span>
+              СберКарта •• 4892
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="hidden sm:flex flex-col items-end">
+          <span class="font-title-sm text-title-sm text-on-surface font-medium">05 октября</span>
+          <span class="font-body-sm text-on-surface-variant">через 30 дней</span>
+        </div>
+        <div class="flex flex-col items-end w-28">
+          <span class="font-headline-md text-headline-md font-tabular-num text-on-surface font-semibold">2 393 ₽</span>
+          <span class="font-body-sm text-on-surface-variant">в месяц (сплит)</span>
+        </div>
+      </div>
+    </div>
+    <!-- Item 4: Spotify Family -->
+    <div class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors">
+      <div class="flex items-center gap-space-md">
+        <div class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center font-headline-md font-bold text-base shadow-sm">
+          <span class="material-symbols-outlined text-xl">music_note</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-title-sm text-title-sm text-on-surface font-semibold">Spotify Family</span>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-container/50 text-on-secondary-container text-body-sm font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Активна
+            </span>
+          </div>
+          <div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+            <span class="">Музыка</span>
+            <span class="">•</span>
+            <span class="flex items-center gap-1 text-outline">
+              <span class="material-symbols-outlined text-xs">credit_card</span>
+              СберКарта •• 4892
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="hidden sm:flex flex-col items-end">
+          <span class="font-title-sm text-title-sm text-on-surface font-medium">27 сентября</span>
+          <span class="font-body-sm text-on-surface-variant">через 22 дня</span>
+        </div>
+        <div class="flex flex-col items-end w-28">
+          <span class="font-headline-md text-headline-md font-tabular-num text-on-surface font-semibold">1 150 ₽</span>
+          <span class="font-body-sm text-on-surface-variant">10.99 € / мес.</span>
+        </div>
+      </div>
+    </div>
+        <!-- Item 5: Кинопоиск -->
+    <div class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors">
+      <div class="flex items-center gap-space-md">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-700 flex items-center justify-center font-headline-md font-bold text-base shadow-sm">К</div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-title-sm text-title-sm text-on-surface font-semibold">Кинопоиск (Плюс Мульти)</span>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-container/50 text-on-secondary-container text-body-sm font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Активна
+            </span>
+          </div>
+          <div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+            <span class="">Развлечения</span>
+            <span class="">•</span>
+            <span class="flex items-center gap-1 text-outline">
+              <span class="material-symbols-outlined text-xs">credit_card</span>
+              СберКарта •• 4892
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="hidden sm:flex flex-col items-end">
+          <span class="font-title-sm text-title-sm text-on-surface font-medium">18 сентября</span>
+          <span class="font-body-sm text-on-surface-variant">через 13 дней</span>
+        </div>
+        <div class="flex flex-col items-end w-28">
+          <span class="font-headline-md text-headline-md font-tabular-num text-on-surface font-semibold">299 ₽</span>
+          <span class="font-body-sm text-on-surface-variant">в месяц</span>
+        </div>
+      </div>
+    </div>
+    <!-- Item 6: Telegram Premium -->
+    <div class="flex items-center justify-between p-space-md hover:bg-surface-container-low transition-colors">
+      <div class="flex items-center gap-space-md">
+        <div class="w-10 h-10 rounded-xl bg-sky-500/15 text-sky-600 flex items-center justify-center font-headline-md font-bold text-base shadow-sm">
+          <span class="material-symbols-outlined text-xl">send</span>
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-title-sm text-title-sm text-on-surface font-semibold">Telegram Premium</span>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary-container/50 text-on-secondary-container text-body-sm font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Активна
+            </span>
+          </div>
+          <div class="flex items-center gap-space-xs text-on-surface-variant font-body-sm">
+            <span class="">Сервисы</span>
+            <span class="">•</span>
+            <span class="flex items-center gap-1 text-outline">
+              <span class="material-symbols-outlined text-xs">credit_card</span>
+              СберКарта •• 4892
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-8">
+        <div class="hidden sm:flex flex-col items-end">
+          <span class="font-title-sm text-title-sm text-on-surface font-medium">28 сентября</span>
+          <span class="font-body-sm text-on-surface-variant">через 23 дня</span>
+        </div>
+        <div class="flex flex-col items-end w-28">
+          <span class="font-headline-md text-headline-md font-tabular-num text-on-surface font-semibold">299 ₽</span>
+          <span class="font-body-sm text-on-surface-variant">в месяц</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- Right Column (4 cols): Annual Spending Visualization & AI Optimization Advice -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<div class="card overflow-hidden flex flex-col divide-y divide-surface-container-high">
+  <!-- Section A: Annual Cost Distribution -->
+  <div class="p-space-lg flex flex-col gap-space-md">
+    <div class="flex items-start justify-between">
+      <div class="flex flex-col">
+        <span class="font-title-sm text-title-sm text-on-surface font-semibold">Годовая стоимость</span>
+        <span class="font-body-sm text-body-sm text-on-surface-variant">Распределение годовых затрат</span>
+      </div>
+      <span class="font-title-sm text-title-sm text-primary font-bold">41 880 ₽ / год</span>
+    </div>
+    <div class="flex flex-col gap-space-sm pt-space-xs">
+      <!-- ChatGPT -->
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center justify-between text-body-sm">
+          <span class="font-medium text-on-surface">ChatGPT Plus</span>
+          <span class="font-tabular-num text-on-surface font-semibold">35 880 ₽ <span class="text-outline font-normal text-xs">(38%)</span></span>
+        </div>
+        <div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+          <div class="h-full bg-primary rounded-full" style="width: 85%;"></div>
+        </div>
+      </div>
+      <!-- WorldClass -->
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center justify-between text-body-sm">
+          <span class="font-medium text-on-surface">Фитнес WorldClass</span>
+          <span class="font-tabular-num text-on-surface font-semibold">28 716 ₽ <span class="text-outline font-normal text-xs">(31%)</span></span>
+        </div>
+        <div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+          <div class="h-full bg-secondary rounded-full" style="width: 68%;"></div>
+        </div>
+      </div>
+      <!-- Spotify -->
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center justify-between text-body-sm">
+          <span class="font-medium text-on-surface">Spotify Family</span>
+          <span class="font-tabular-num text-on-surface font-semibold">13 800 ₽ <span class="text-outline font-normal text-xs">(15%)</span></span>
+        </div>
+        <div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+          <div class="h-full bg-tertiary rounded-full" style="width: 33%;"></div>
+        </div>
+      </div>
+      <!-- Other Subscriptions Combined -->
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center justify-between text-body-sm">
+          <span class="font-medium text-on-surface">Остальные 4 сервиса</span>
+          <span class="font-tabular-num text-on-surface font-semibold">15 562 ₽ <span class="text-outline font-normal text-xs">(16%)</span></span>
+        </div>
+        <div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+          <div class="h-full bg-outline-variant rounded-full" style="width: 25%;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Embedded AI Insight Recommendation -->
+    <div class="p-space-sm rounded-lg bg-surface-container-low flex items-start gap-space-sm border border-surface-container-high/60">
+      <span class="material-symbols-outlined text-primary text-lg flex-shrink-0 mt-0.5">tips_and_updates</span>
+      <div class="flex flex-col gap-0.5">
+        <span class="font-title-sm text-xs font-semibold text-on-surface">Совет FinAI</span>
+        <p class="font-body-sm text-xs text-on-surface-variant leading-normal">
+          Переход на годовые тарифы <strong class="text-on-surface font-medium">Яндекс Плюс</strong> и <strong class="text-on-surface font-medium">Telegram Premium</strong> сэкономит до <span class="text-primary font-bold">2 100 ₽</span> в год.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section B: Upcoming Timeline -->
+  <div class="p-space-lg flex flex-col gap-space-md">
+    <div class="flex items-center justify-between">
+      <h4 class="subsection-title">Ближайшие списания</h4>
+    </div>
+    <div class="relative pl-6 flex flex-col gap-space-md">
+      <div class="absolute left-2 top-2 bottom-2 w-0.5 bg-surface-container-high"></div>
+      <div class="relative flex items-center justify-between">
+        <div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-secondary-container/40"></div>
+        <div class="flex flex-col">
+          <span class="font-title-sm text-body-md font-semibold text-on-surface">Яндекс Плюс</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">12 сен • СберКарта •• 4892</span>
+        </div>
+        <span class="font-tabular-num text-title-sm font-bold text-on-surface">499 ₽</span>
+      </div>
+      <div class="relative flex items-center justify-between">
+        <div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-surface-dim"></div>
+        <div class="flex flex-col">
+          <span class="font-title-sm text-body-md font-semibold text-on-surface">Кинопоиск</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">18 сен • СберКарта •• 4892</span>
+        </div>
+        <span class="font-tabular-num text-title-sm font-bold text-on-surface">299 ₽</span>
+      </div>
+      <div class="relative flex items-center justify-between">
+        <div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-surface-dim"></div>
+        <div class="flex flex-col">
+          <span class="font-title-sm text-body-md font-semibold text-on-surface">ChatGPT Plus</span>
+          <span class="font-body-sm text-body-sm text-on-surface-variant">24 сен • СберКарта •• 4892</span>
+        </div>
+        <span class="font-tabular-num text-title-sm font-bold text-on-surface">2 990 ₽</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+<script src="assets/js/layout.js"></script>
+<script src="assets/js/interactions.js"></script>
+<script>
+  (function () {
+    var pending = document.getElementById('pendingCard');
+    var confirmedList = document.getElementById('confirmedList');
+    var filterGrp = document.getElementById('subTypeFilter');
+
+    // remove dead three-dot menus from confirmed subscriptions
+    Array.prototype.forEach.call(document.querySelectorAll('.btn-icon'), function (b) { b.remove(); });
+
+    var CAT = [
+      { name: 'Яндекс Плюс', cat: 'Развлечения' },
+      { name: 'ChatGPT Plus', cat: 'Сервисы и AI' },
+      { name: 'Фитнес WorldClass', cat: 'Спорт' },
+      { name: 'Spotify Family', cat: 'Связь' },
+      { name: 'Кинопоиск (Плюс Мульти)', cat: 'Развлечения' },
+      { name: 'Telegram Premium', cat: 'Сервисы и AI' },
+      { name: 'Ozon Premium', cat: 'Развлечения' }
+    ];
+    function catFor(name) {
+      for (var i = 0; i < CAT.length; i++) { if (CAT[i].name === name) { return CAT[i].cat; } }
+      return null;
+    }
+
+    var confirmedRows = Array.prototype.slice.call(confirmedList.querySelectorAll('.p-space-md'));
+    var pendingRow = pending ? pending.querySelector('.p-space-md') : null;
+    var items = confirmedRows.slice();
+    if (pendingRow) { items.push(pendingRow); }
+
+    function tagItem(el) {
+      var nameEl = el.querySelector('span.font-title-sm');
+      var name = nameEl ? nameEl.textContent.trim() : '';
+      var cat = catFor(name);
+      el.setAttribute('data-sub', cat || 'all');
+    }
+    items.forEach(tagItem);
+
+    function apply(sub) {
+      items.forEach(function (it) {
+        it.style.display = (sub === 'all' || it.getAttribute('data-sub') === sub) ? '' : 'none';
+      });
+    }
+
+    if (filterGrp) {
+      filterGrp.addEventListener('click', function (e) {
+        if (!e.target || !e.target.closest) { return; }
+        var b = e.target.closest('button[data-sub]');
+        if (!b) { return; }
+        var v = b.getAttribute('data-sub');
+        Array.prototype.forEach.call(filterGrp.querySelectorAll('.pill'), function (p) {
+          p.classList.toggle('is-active', p === b);
+        });
+        apply(v);
+      });
+    }
+
+    function confirmOzon() {
+      if (pending) { pending.style.display = 'none'; }
+      Array.prototype.forEach.call(confirmedList.querySelectorAll('span'), function (s) {
+        if (s.textContent.indexOf('Подтверждённые подписки') === 0) { s.textContent = 'Подтверждённые подписки (7)'; }
+      });
+    }
+
+    var findConfirm = document.querySelector('#page-content .lg\\:col-span-8 .btn-primary');
+    // "Это подписка" and "Разовый платёж" in the detection card
+    Array.prototype.forEach.call(document.querySelectorAll('button'), function (b) {
+      var label = b.textContent.trim();
+      if (label === 'Это подписка') { b.addEventListener('click', confirmOzon); }
+      else if (label === 'Разовый платёж') { b.addEventListener('click', function () { if (pending) { pending.style.display = 'none'; } }); }
+    });
+    // pending card "Подтвердить"
+    if (pending) {
+      Array.prototype.forEach.call(pending.querySelectorAll('button'), function (b) {
+        if (b.textContent.trim() === 'Подтвердить') { b.addEventListener('click', confirmOzon); }
+      });
+    }
+
+    apply('all');
+  })();
+</script>
+</body>
+</html>

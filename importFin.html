@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Импорт — FinAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="assets/css/finai.css" rel="stylesheet">
+<style>html{opacity:0}</style>
+<style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/js/tailwind-config.js"></script>
+</head>
+<body class="bg-background font-body-md text-body-md text-on-surface" data-page="import">
+<div id="page-content" class="flex flex-col w-full">
+
+<!-- Page Header & Security Assurance -->
+<section class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-lg">
+  <div class="flex flex-col gap-space-2xs">
+    <div class="flex items-center gap-space-xs text-primary font-label-caps text-label-caps uppercase tracking-wider">
+      <span class="material-symbols-outlined text-base">file_upload_off</span>
+      <span>Безопасный парсер реестров</span>
+    </div>
+    <h1 class="page-title">Загрузка и импорт выписок</h1>
+    <p class="page-subtitle max-w-3xl">Загрузите банковскую выписку в формате PDF или CSV для мгновенного AI-анализа структуры расходов и оптимизации капитала.</p>
+  </div>
+  <div class="flex flex-wrap items-center gap-space-xs shrink-0">
+    <div class="card px-space-sm py-space-xs flex items-center gap-space-xs text-on-surface">
+      <span class="material-symbols-outlined text-primary text-lg">lock</span>
+      <div class="flex flex-col">
+        <span class="font-label-md text-label-md">SSL 256-bit</span>
+        <span class="font-label-caps text-label-caps text-on-surface-variant">Шифрование сессии</span>
+      </div>
+    </div>
+    <div class="card px-space-sm py-space-xs flex items-center gap-space-xs text-on-surface">
+      <span class="material-symbols-outlined text-tertiary text-lg">verified_user</span>
+      <div class="flex flex-col">
+        <span class="font-label-md text-label-md">On-Device &amp; Cloud</span>
+        <span class="font-label-caps text-label-caps text-on-surface-variant">Анонимизация данных</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Primary Drag & Drop Upload Hero Area -->
+<section class="relative mb-space-lg">
+  <div class="relative overflow-hidden card shadow-md p-space-xl lg:p-space-2xl transition-all duration-300" id="drop-zone">
+    <!-- Ambient Glow Decorators -->
+    <div class="absolute -top-24 -right-24 w-96 h-96 bg-primary-fixed/40 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-secondary-container/30 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="relative z-10 flex flex-col items-center text-center max-w-2xl mx-auto">
+      <!-- Floating Central Icon with Radar Glow -->
+      <div class="relative mb-space-md">
+        <div class="absolute inset-0 bg-primary/20 rounded-full blur-xl scale-125 animate-pulse"></div>
+        <div class="relative flex items-center justify-center w-20 h-20 rounded-xl bg-surface-container-low shadow-sm text-primary">
+          <span class="material-symbols-outlined text-4xl">cloud_upload</span>
+          <div class="absolute -bottom-1 -right-1 flex items-center justify-center w-7 h-7 bg-primary text-on-primary rounded-lg shadow-sm">
+            <span class="material-symbols-outlined text-base">receipt_long</span>
+          </div>
+        </div>
+      </div>
+      <h2 class="font-headline-lg text-headline-lg text-on-surface mb-space-xs">
+          Перетащите файл выписки сюда или выберите на компьютере
+        </h2>
+      <p class="font-body-md text-body-md text-on-surface-variant mb-space-lg">
+          Интеллектуальный парсер распознаёт таблицы платежей, категории МСС, комиссии и начисления дивидендов автоматически.
+        </p>
+      <!-- Supported formats chips -->
+      <div class="flex flex-wrap justify-center items-center gap-space-xs mb-space-lg">
+        <span class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md shadow-xs">
+          <span class="material-symbols-outlined text-sm text-primary">picture_as_pdf</span>
+            PDF-выписка
+          </span>
+        <span class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md shadow-xs">
+          <span class="material-symbols-outlined text-sm text-tertiary">data_table</span>
+            CSV-выписка
+          </span>
+      </div>
+      <!-- File Upload Actions -->
+      <input accept=".pdf,.csv" class="hidden" id="file-input" type="file">
+      <div class="flex flex-col sm:flex-row items-center gap-space-sm w-full justify-center">
+        <button class="btn btn-primary w-full sm:w-auto" onclick="document.getElementById('file-input').click()" type="button">
+          <span class="material-symbols-outlined">folder_open</span>
+          <span class="">Выбрать файл выписки</span>
+        </button>
+        <button class="btn btn-secondary w-full sm:w-auto" id="demo-btn" type="button">
+          <span class="material-symbols-outlined text-primary text-xl">play_circle</span>
+          <span class="">Демо-выписка (1 248 операций)</span>
+        </button>
+      </div>
+      <!-- Trust Subtext -->
+      <div class="flex items-start sm:items-center gap-space-xs mt-space-lg text-left sm:text-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-secondary text-base shrink-0 mt-0.5 sm:mt-0">shield_with_heart</span>
+        <span class="font-body-sm text-body-sm">
+            Максимальный размер 50 МБ. Логины и пароли не запрашиваются. Номера карт маскируются хэшем (SHA-256) в браузере.
+          </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How to export a PDF / CSV statement -->
+<section class="flex flex-col gap-space-sm mb-space-lg">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-space-xs">
+      <span class="material-symbols-outlined text-primary">menu_book</span>
+      <h3 class="font-title-sm text-title-sm text-on-surface">Как выгрузить выписку за 1 минуту</h3>
+    </div>
+    <span class="font-label-caps text-label-caps uppercase text-on-surface-variant">PDF · CSV</span>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+    <div class="card p-space-md hover:shadow-md transition-shadow flex flex-col justify-between">
+      <div class="flex flex-col gap-space-xs">
+        <div class="flex items-center gap-space-xs">
+          <div class="w-8 h-8 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container font-headline-md text-headline-md">
+            <span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+          </div>
+          <span class="font-title-sm text-title-sm text-on-surface">PDF-выписка</span>
+        </div>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+            В интернет-банке найдите раздел «Выписки» или «Справки» и выберите формат <span class="font-semibold text-on-surface">PDF</span> за нужный период.
+          </p>
+      </div>
+    </div>
+    <div class="card p-space-md hover:shadow-md transition-shadow flex flex-col justify-between">
+      <div class="flex flex-col gap-space-xs">
+        <div class="flex items-center gap-space-xs">
+          <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-tertiary font-headline-md text-headline-md">
+            <span class="material-symbols-outlined text-lg">data_table</span>
+          </div>
+          <span class="font-title-sm text-title-sm text-on-surface">CSV-выписка</span>
+        </div>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mt-space-2xs">
+            В интернет-банке выберите экспорт операций и формат <span class="font-semibold text-on-surface">CSV</span> за нужный период.
+          </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Active & Processed Statements Registry -->
+<section class="flex flex-col gap-space-sm mb-space-lg">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-space-xs">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Загруженные выписки в этом сеансе</h3>
+      <span class="px-2 py-0.5 rounded-full bg-secondary-container text-secondary font-label-caps text-label-caps">1 файл активен</span>
+    </div>
+    <span class="font-body-sm text-body-sm text-on-surface-variant">Автоматическое объединение транзакций включено</span>
+  </div>
+  <div class="flex flex-col gap-space-xs">
+    <!-- File Row 1: Active Statement -->
+    <div class="card p-space-lg flex flex-col lg:flex-row lg:items-center justify-between gap-space-md transition-all hover:shadow-md">
+      <div class="flex items-start sm:items-center gap-space-md min-w-0">
+        <div class="relative shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-surface-container-low text-primary">
+          <span class="material-symbols-outlined text-2xl">description</span>
+          <span class="absolute -top-1 -right-1 flex h-4 w-4">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-4 w-4 bg-primary text-on-primary text-[10px] items-center justify-center font-bold">✓</span>
+          </span>
+        </div>
+        <div class="flex flex-col min-w-0">
+          <div class="flex flex-wrap items-center gap-space-xs mb-1">
+            <span class="font-title-sm text-title-sm text-on-surface truncate">sberbank_statement_september_2026.pdf</span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-caps text-label-caps">
+              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Обработано 100% • Активна
+              </span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+              СберБанк • Счёт *8412 • 01.09.2026 – 30.09.2026 • 1 248 операций • 2.4 МБ
+            </p>
+          <!-- Quick Metrics Badge Matrix -->
+          <div class="flex flex-wrap items-center gap-space-md mt-space-xs text-body-sm font-tabular-num">
+            <span class="text-secondary font-medium">Доходы: +181 270 ₽</span>
+            <span class="text-on-surface-variant">•</span>
+            <span class="text-on-surface font-medium">Расходы: −138 420 ₽</span>
+            <span class="text-on-surface-variant">•</span>
+            <span class="text-on-surface-variant">Категорий: 8</span>
+          </div>
+        </div>
+      </div>
+      <!-- Row Actions -->
+      <div class="flex items-center gap-space-xs self-end lg:self-center shrink-0">
+        <button class="btn btn-primary" type="button" data-navigate="overview">
+          <span class="material-symbols-outlined text-base">analytics</span>
+          <span class="">Перейти к обзору</span>
+        </button>
+        <button class="btn btn-icon" title="Пересканировать документ" type="button">
+          <span class="material-symbols-outlined text-lg">sync</span>
+        </button>
+        <button class="btn btn-icon" title="Удалить из сеанса" type="button">
+          <span class="material-symbols-outlined text-lg">delete</span>
+        </button>
+      </div>
+    </div>
+    <!-- File Row 2: Secondary / Archived Statement -->
+    <div class="card p-space-lg flex flex-col lg:flex-row lg:items-center justify-between gap-space-md opacity-90 hover:opacity-100 transition-all">
+      <div class="flex items-start sm:items-center gap-space-md min-w-0">
+        <div class="shrink-0 flex items-center justify-center w-12 h-12 rounded-xl bg-surface-container text-tertiary">
+          <span class="material-symbols-outlined text-2xl">table_view</span>
+        </div>
+        <div class="flex flex-col min-w-0">
+          <div class="flex flex-wrap items-center gap-space-xs mb-1">
+            <span class="font-title-sm text-title-sm text-on-surface truncate">statement_august_2026.csv</span>
+            <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps">
+                Архив • Сравнение периодов
+              </span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+              Выписка • Счёт *3319 • 01.08.2026 – 31.08.2026 • 840 операций • 1.1 МБ
+            </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-space-xs self-end lg:self-center shrink-0">
+        <button class="btn btn-secondary" type="button">
+          <span class="material-symbols-outlined text-base">call_merge</span>
+          <span class="">Объединить выписки</span>
+        </button>
+        <button class="btn btn-icon" title="Удалить файл" type="button">
+          <span class="material-symbols-outlined text-lg">delete</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Security & Privacy Guarantee Banner (FinAI SafeGuard) -->
+<section class="rounded-xl bg-surface-container-low p-space-lg lg:p-space-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-space-lg shadow-sm mb-space-lg">
+  <div class="flex flex-col gap-space-xs max-w-xl">
+    <div class="flex items-center gap-space-xs text-primary font-title-sm text-title-sm">
+      <span class="material-symbols-outlined text-2xl">verified</span>
+      <span class="">Банковский уровень безопасности данных FinAI SafeGuard</span>
+    </div>
+    <p class="font-body-md text-body-md text-on-surface-variant">
+        Ваша конфиденциальность — абсолютный приоритет. Мы соблюдаем стандарты защиты финансовой тайны и 152-ФЗ.
+      </p>
+    <div class="flex flex-col gap-space-xs mt-space-xs">
+      <div class="flex items-center gap-space-xs text-on-surface font-body-sm text-body-sm">
+        <span class="material-symbols-outlined text-primary text-base">check_circle</span>
+        <span class="">Никаких логинов и паролей — вы не передаете доступ к онлайн-банку</span>
+      </div>
+      <div class="flex items-center gap-space-xs text-on-surface font-body-sm text-body-sm">
+        <span class="material-symbols-outlined text-primary text-base">check_circle</span>
+        <span class="">Автоматическое маскирование персональных данных (ФИО и номера карт заменяются на необратимый хэш)</span>
+      </div>
+      <div class="flex items-center gap-space-xs text-on-surface font-body-sm text-body-sm">
+        <span class="material-symbols-outlined text-primary text-base">check_circle</span>
+        <span class="">Удаление файлов с сервера в 1 клик или автоматически через 24 часа</span>
+      </div>
+    </div>
+  </div>
+  <!-- Mini Security Seal Graphic -->
+  <div class="shrink-0 flex flex-col items-center justify-center p-space-md rounded-xl bg-surface-container-lowest shadow-sm self-stretch md:self-auto min-w-[200px]">
+    <div class="w-14 h-14 rounded-full bg-secondary-container flex items-center justify-center text-secondary mb-space-2xs">
+      <span class="material-symbols-outlined text-3xl">security</span>
+    </div>
+    <span class="font-title-sm text-title-sm text-on-surface text-center">Zero-Knowledge</span>
+    <span class="font-label-caps text-label-caps text-on-surface-variant text-center uppercase mt-0.5">Архитектура обработки</span>
+  </div>
+</section>
+<!-- Sticky Bottom Quick Action Banner -->
+<aside class="sticky bottom-4 z-30 card shadow-xl p-space-md flex flex-col sm:flex-row items-center justify-between gap-space-md">
+  <div class="flex items-center gap-space-sm">
+    <div class="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center text-secondary shrink-0">
+      <span class="material-symbols-outlined text-xl">auto_awesome</span>
+    </div>
+    <div class="flex flex-col">
+      <span class="font-title-sm text-title-sm text-on-surface">Текущая выписка готова к аналитике</span>
+      <span class="font-body-sm text-body-sm text-on-surface-variant">Все 1 248 транзакций классифицированы искусственным интеллектом</span>
+    </div>
+  </div>
+  <div class="flex items-center gap-space-xs w-full sm:w-auto">
+    <button class="btn btn-primary w-full sm:w-auto" type="button" data-navigate="overview">
+      <span class="">Перейти в дашборд «Обзор»</span>
+      <span class="material-symbols-outlined text-lg">arrow_forward</span>
+    </button>
+  </div>
+</aside>
+
+
+<script>
+  // Micro-interactions for Drag & Drop zone & Demo trigger
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const demoBtn = document.getElementById('demo-btn');
+
+  if (dropZone) {
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('scale-[1.008]', 'shadow-xl');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('scale-[1.008]', 'shadow-xl');
+      }, false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length) {
+        alert('Файл «' + files[0].name + '» успешно принят на парсинг.');
+      }
+    });
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        alert('Выбран файл: ' + e.target.files[0].name + '. Начинается локальная обработка.');
+      }
+    });
+  }
+
+  if (demoBtn) {
+    demoBtn.addEventListener('click', () => {
+      demoBtn.innerHTML = '<span class="material-symbols-outlined text-primary text-xl animate-spin">refresh</span><span>Загрузка 1 248 операций...</span>';
+      setTimeout(() => {
+        demoBtn.innerHTML = '<span class="material-symbols-outlined text-primary text-xl">check_circle</span><span>Демо-выписка активна</span>';
+      }, 700);
+    });
+  }
+
+  // Session registry actions (client-side)
+  const iconButtons = document.querySelectorAll('#page-content .btn-icon');
+  iconButtons.forEach((btn) => {
+    const title = (btn.getAttribute('title') || '').toLowerCase();
+    if (title.indexOf('удалить') !== -1) {
+      btn.addEventListener('click', () => {
+        const row = btn.closest('.card');
+        if (row) { row.style.display = 'none'; }
+      });
+    } else if (title.indexOf('пересканировать') !== -1) {
+      btn.addEventListener('click', () => {
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) { icon.textContent = 'sync'; icon.classList.add('animate-spin'); setTimeout(() => { icon.classList.remove('animate-spin'); }, 900); }
+      });
+    }
+  });
+</script>
+
+
+</div>
+<script src="assets/js/layout.js"></script>
+</body>
+</html>
