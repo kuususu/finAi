@@ -20,7 +20,7 @@ FinAI - веб-приложение для анализа личных фина�
 ## Структура проекта
 
 ```
-stitch_finai_banking_analytics_platform/
+stitch_finai_banking_analytics_platform/ 
 ├── assets/
 │   ├── css/
 │   │   └── finaii.css              ← Токены дизайн-системы + стили общих компонентов
